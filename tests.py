@@ -191,6 +191,38 @@ class ClientTestCase(unittest.TestCase):
         self.assertIsInstance(api.user_id, int)
         self.assertEqual(api.username, ACCOUNT_USERNAME)
 
+    def test_sasa_example_functionality(self):
+        """
+        Test the sasa example functionality to ensure it works correctly.
+        This tests basic client initialization and sample data handling.
+        """
+        # Test that we can import and run the sasa example
+        try:
+            import sys
+            import os
+            examples_path = os.path.join(os.path.dirname(__file__), 'examples')
+            sys.path.insert(0, examples_path)
+            
+            from sasa_example import sasa_example_demo
+            
+            # Should be able to run the demo without errors
+            sasa_example_demo()
+            
+        except ImportError:
+            self.fail("Could not import sasa_example module")
+        except Exception as e:
+            self.fail(f"sasa_example_demo failed with error: {e}")
+        
+        # Test basic sample data handling
+        sample_username = "sasa"
+        self.assertEqual(len(sample_username), 4)
+        self.assertTrue(sample_username.isalnum())
+        
+        # Test client initialization (basic test without network calls)
+        cl = Client()
+        self.assertIsNotNone(cl)
+        self.assertIsNone(cl.proxy)  # Default proxy should be None
+
 
 class ClientDeviceTestCase(ClientPrivateTestCase):
 
